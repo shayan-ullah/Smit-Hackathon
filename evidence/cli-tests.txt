@@ -1,0 +1,23 @@
+test_cli_booking_flow_success_and_failure (tests.test_cli.TestSmartBusCLI.test_cli_booking_flow_success_and_failure)
+CLI booking helper handles valid flow, parse errors, and business rule failures. ... ok
+test_cli_cancellation_flow (tests.test_cli.TestSmartBusCLI.test_cli_cancellation_flow)
+CLI cancellation handles valid cancellation and error conditions. ... ok
+test_cli_search_flow (tests.test_cli.TestSmartBusCLI.test_cli_search_flow)
+CLI search handles blank input, found matches, and not found. ... ok
+test_deterministic_demo_session_mocked (tests.test_cli.TestSmartBusCLI.test_deterministic_demo_session_mocked)
+Execute the exact 9-step deterministic workflow from 06_ACCEPTANCE_TESTS.md via mocked CLI input. ... ok
+test_ex17_eof_and_keyboard_interrupt_handling (tests.test_cli.TestSmartBusCLI.test_ex17_eof_and_keyboard_interrupt_handling)
+EX-17: EOFError and KeyboardInterrupt during menu or booking exit gracefully without traceback. ... ok
+test_ex18_invalid_submenu_then_back (tests.test_cli.TestSmartBusCLI.test_ex18_invalid_submenu_then_back)
+EX-18: Invalid submenu choice in Option 1 and Option 6 shows error, repeats, and returns safely on 0. ... ok
+test_ex21_fresh_process_has_independent_state (tests.test_cli.TestSmartBusCLI.test_ex21_fresh_process_has_independent_state)
+EX-21: Starting a new session begins with initial capacity, empty history, and B1001 candidate. ... ok
+test_subprocess_execution (tests.test_cli.TestSmartBusCLI.test_subprocess_execution)
+Execute main.py in a real subprocess using sys.executable to verify end-to-end OS execution. ... ok
+test_tc12_invalid_menu_choices_and_exit (tests.test_cli.TestSmartBusCLI.test_tc12_invalid_menu_choices_and_exit)
+TC-12: Main choice 'abc', '0', '9', then '8' -> helpful errors, repeated menu, clean exit. ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.158s
+
+OK

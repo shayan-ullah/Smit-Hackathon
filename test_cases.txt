@@ -1,0 +1,283 @@
+# Smart Bus Ticket Booking System - Acceptance Test Execution Log
+# Generated from actual test suite and deterministic demo execution
+# Total Scenarios Evaluated: 34
+# Overall Status: ALL TESTS PASSED
+
+Test ID  | Scenario                     | Status | Test Method / Location
+---------------------------------------------------------------------------------------------------------
+TC-01    | View all routes              | PASS   | tests/test_main.py::TestSmartBusCore::test_tc01_initial_routes_and_capacity
+TC-02    | Search Hyderabad             | PASS   | tests/test_main.py::TestSmartBusCore::test_tc02_search_hyderabad
+TC-03    | Search unknown city          | PASS   | tests/test_main.py::TestSmartBusCore::test_tc03_search_unknown_city
+TC-04    | Book two seats               | PASS   | tests/test_main.py::TestSmartBusCore::test_tc04_valid_booking_ahmed
+TC-05    | Zero seats booking           | PASS   | tests/test_main.py::TestSmartBusCore::test_tc05_reject_zero_seats
+TC-06    | Too many seats               | PASS   | tests/test_main.py::TestSmartBusCore::test_tc06_reject_excess_seats
+TC-07    | Cancel confirmed booking     | PASS   | tests/test_main.py::TestSmartBusCore::test_tc07_cancel_confirmed_booking
+TC-08    | Repeat cancellation          | PASS   | tests/test_main.py::TestSmartBusCore::test_tc08_reject_repeat_cancellation
+TC-09    | Report with no bookings      | PASS   | tests/test_main.py::TestSmartBusCore::test_tc09_report_on_fresh_state
+TC-10    | Book all seats               | PASS   | tests/test_main.py::TestSmartBusCore::test_tc10_book_all_seats_on_route
+TC-11    | Report after cancellation    | PASS   | tests/test_main.py::TestSmartBusCore::test_tc11_two_bookings_and_cancel_one
+TC-12    | Invalid menu choices and exit | PASS   | tests/test_cli.py::TestSmartBusCLI::test_tc12_invalid_menu_choices_and_exit
+EX-01    | Name validation              | PASS   | tests/test_main.py::TestSmartBusCore::test_ex01_name_validation
+EX-02    | Age validation               | PASS   | tests/test_main.py::TestSmartBusCore::test_ex02_age_validation
+EX-03    | Route validation             | PASS   | tests/test_main.py::TestSmartBusCore::test_ex03_route_validation
+EX-04    | Seat quantity validation     | PASS   | tests/test_main.py::TestSmartBusCore::test_ex04_seat_quantity_validation
+EX-05    | ID normalization             | PASS   | tests/test_main.py::TestSmartBusCore::test_ex05_case_and_whitespace_id_normalization
+EX-06    | ID sequence without reuse    | PASS   | tests/test_main.py::TestSmartBusCore::test_ex06_id_sequence_without_reuse
+EX-07    | ID collision avoidance       | PASS   | tests/test_main.py::TestSmartBusCore::test_ex07_collision_avoidance_in_id_allocator
+EX-08    | Cancel unknown ID            | PASS   | tests/test_main.py::TestSmartBusCore::test_ex08_cancel_unknown_or_blank_id
+EX-09    | State isolation              | PASS   | tests/test_main.py::TestSmartBusCore::test_ex09_state_isolation
+EX-10    | Empty bookings history       | PASS   | tests/test_main.py::TestSmartBusCore::test_ex10_empty_bookings_view
+EX-11    | Route status transitions     | PASS   | tests/test_main.py::TestSmartBusCore::test_ex11_route_status_transitions
+EX-12    | All routes exhausted         | PASS   | tests/test_main.py::TestSmartBusCore::test_ex12_all_routes_exhausted
+EX-13    | Schedule structure           | PASS   | tests/test_main.py::TestSmartBusCore::test_ex13_schedule_structure
+EX-14    | Isolated report fixture      | PASS   | tests/test_main.py::TestSmartBusCore::test_ex14_isolated_report_fixture
+EX-15    | Search route ID and unknown ID | PASS   | tests/test_main.py::TestSmartBusCore::test_ex15_search_route_id_and_unknown_id
+EX-16    | Empty routes fixture         | PASS   | tests/test_main.py::TestSmartBusCore::test_ex16_empty_routes_fixture
+EX-17    | EOF and KeyboardInterrupt handling | PASS   | tests/test_cli.py::TestSmartBusCLI::test_ex17_eof_and_keyboard_interrupt_handling
+EX-18    | Submenu navigation & recovery | PASS   | tests/test_cli.py::TestSmartBusCLI::test_ex18_invalid_submenu_then_back
+EX-19    | Bool and non-int rejection   | PASS   | tests/test_main.py::TestSmartBusCore::test_ex19_reject_bool_and_non_int_types
+EX-20    | Comprehensive invariant reconciliation | PASS   | tests/test_main.py::TestSmartBusCore::test_ex20_comprehensive_invariant_reconciliation
+EX-21    | Fresh process state independence | PASS   | tests/test_cli.py::TestSmartBusCLI::test_ex21_fresh_process_has_independent_state
+EX-22    | Copied path containing spaces | PASS   | project/evidence/commands.md::Portability Check
+
+=========================================================================================================
+DETAILED SCENARIO EXECUTION EVIDENCE
+=========================================================================================================
+
+[TC-01] View all routes
+  Action/Input:     Option 1 -> 1 (All routes)
+  Expected Result:  All five routes (R101-R105) displayed with departure, destination, time, fare, capacities (total 183 seats), status Available.
+  Observed Result:  Displayed all 5 routes, initial total capacity 183/183, all Available.
+  Verification:     PASS
+  Test Method:      tests/test_main.py::TestSmartBusCore::test_tc01_initial_routes_and_capacity
+
+[TC-02] Search Hyderabad
+  Action/Input:     Option 2 -> 'hyderabad'
+  Expected Result:  Routes R101, R103, R105 returned in order; R102 and R104 omitted; case and outer whitespace handled.
+  Observed Result:  Returned R101, R103, R105 matching either departure or destination city.
+  Verification:     PASS
+  Test Method:      tests/test_main.py::TestSmartBusCore::test_tc02_search_hyderabad
+
+[TC-03] Search unknown city
+  Action/Input:     Option 2 -> 'Atlantis'
+  Expected Result:  Helpful no-match message; state unchanged; program continues.
+  Observed Result:  Empty match list returned; deep copy comparison proved zero state mutation.
+  Verification:     PASS
+  Test Method:      tests/test_main.py::TestSmartBusCore::test_tc03_search_unknown_city
+
+[TC-04] Book two seats
+  Action/Input:     Option 3 -> Ahmed, 24, R101, 2
+  Expected Result:  Booking B1001 confirmed; fare Rs. 2400; R101 available drops from 40 to 38; ID set updated once.
+  Observed Result:  Created booking B1001 with fare Rs. 2400, R101 available seats = 38, B1001 added to issued set.
+  Verification:     PASS
+  Test Method:      tests/test_main.py::TestSmartBusCore::test_tc04_valid_booking_ahmed
+
+[TC-05] Zero seats booking
+  Action/Input:     Option 3 -> Seats: 0
+  Expected Result:  Validation failure; no booking created; seats and counters unchanged.
+  Observed Result:  ValueError raised on seats <= 0; full state snapshot identical before and after.
+  Verification:     PASS
+  Test Method:      tests/test_main.py::TestSmartBusCore::test_tc05_reject_zero_seats
+
+[TC-06] Too many seats
+  Action/Input:     Option 3 -> Seats: 41 on fresh R101 (cap 40)
+  Expected Result:  Validation failure; requested > available rejected; availability never negative; state unchanged.
+  Observed Result:  ValueError raised: requested 41 but only 40 available; state snapshot identical before and after.
+  Verification:     PASS
+  Test Method:      tests/test_main.py::TestSmartBusCore::test_tc06_reject_excess_seats
+
+[TC-07] Cancel confirmed booking
+  Action/Input:     Option 5 -> B1001
+  Expected Result:  Status set to Cancelled; original record retained; 2 seats restored to R101 (avail 40); ID remains in set.
+  Observed Result:  Status changed to Cancelled, R101 available seats restored to 40, record retained in bookings.
+  Verification:     PASS
+  Test Method:      tests/test_main.py::TestSmartBusCore::test_tc07_cancel_confirmed_booking
+
+[TC-08] Repeat cancellation
+  Action/Input:     Option 5 -> B1001 again
+  Expected Result:  Validation failure; already cancelled; no additional seat restoration; state unchanged.
+  Observed Result:  ValueError raised: already cancelled; R101 available seats remained 40; state unchanged.
+  Verification:     PASS
+  Test Method:      tests/test_main.py::TestSmartBusCore::test_tc08_reject_repeat_cancellation
+
+[TC-09] Report with no bookings
+  Action/Input:     Option 7 on fresh session
+  Expected Result:  Total bookings=0, confirmed=0, cancelled=0, reserved seats=0, confirmed revenue=0, fully booked routes=0.
+  Observed Result:  Observed report totals: 0/0/0/0/Rs. 0/0; all per-route summaries zero.
+  Verification:     PASS
+  Test Method:      tests/test_main.py::TestSmartBusCore::test_tc09_report_on_fresh_state
+
+[TC-10] Book all seats
+  Action/Input:     Option 3 -> 40 seats on R101
+  Expected Result:  Fare Rs. 48000; available seats=0; status Fully Booked; subsequent request rejected; filtered out of available-only view.
+  Observed Result:  Fare Rs. 48000; R101 available=0; status Fully Booked; next request for 1 seat rejected.
+  Verification:     PASS
+  Test Method:      tests/test_main.py::TestSmartBusCore::test_tc10_book_all_seats_on_route
+
+[TC-11] Report after cancellation
+  Action/Input:     Two bookings (Ahmed R101 2 seats Rs.2400, Sara R102 3 seats Rs.6000), cancel B1001, then report
+  Expected Result:  Total=2, Confirmed=1, Cancelled=1, Reserved seats=3, Revenue=Rs. 6000, Fully booked=0; per-route R102=1 confirmed/3 seats/Rs.6000.
+  Observed Result:  Observed report totals: 2 total, 1 confirmed, 1 cancelled, 3 reserved seats, Rs. 6000 confirmed revenue, 0 fully booked routes.
+  Verification:     PASS
+  Test Method:      tests/test_main.py::TestSmartBusCore::test_tc11_two_bookings_and_cancel_one
+
+[TC-12] Invalid menu choices and exit
+  Action/Input:     Main choices: 'abc', '0', '9', then '8'
+  Expected Result:  Helpful error messages; menu repeats; choice 8 exits cleanly without traceback.
+  Observed Result:  Helpful validation error printed for each invalid choice; clean termination on choice 8.
+  Verification:     PASS
+  Test Method:      tests/test_cli.py::TestSmartBusCLI::test_tc12_invalid_menu_choices_and_exit
+
+[EX-01] Name validation
+  Action/Input:     Name: '', '   ', '\t\n'
+  Expected Result:  Reject empty/whitespace; accept trimmed nonempty name.
+  Observed Result:  Rejected whitespace-only names with ValueError; trimmed valid name committed.
+  Verification:     PASS
+  Test Method:      tests/test_main.py::TestSmartBusCore::test_ex01_name_validation
+
+[EX-02] Age validation
+  Action/Input:     Age: 'abc', '0', '-1', '2.5', '1e2', ''
+  Expected Result:  Reject non-integers, zero, negative, exponents; accept positive integers.
+  Observed Result:  Rejected invalid formats with ValueError; parsed +24 and 24 as integer 24.
+  Verification:     PASS
+  Test Method:      tests/test_main.py::TestSmartBusCore::test_ex02_age_validation
+
+[EX-03] Route validation
+  Action/Input:     Route ID: 'R999', '', '   '
+  Expected Result:  Reject unknown or empty route ID with no state change.
+  Observed Result:  Rejected with ValueError; state snapshot unchanged.
+  Verification:     PASS
+  Test Method:      tests/test_main.py::TestSmartBusCore::test_ex03_route_validation
+
+[EX-04] Seat quantity validation
+  Action/Input:     Seats: 'abc', '-1', '1.5', '', '0'
+  Expected Result:  Reject non-integers, zero, negative; accept positive integers.
+  Observed Result:  Rejected invalid numbers; accepted quantity 1.
+  Verification:     PASS
+  Test Method:      tests/test_main.py::TestSmartBusCore::test_ex04_seat_quantity_validation
+
+[EX-05] ID normalization
+  Action/Input:     Route '  r101  ', Booking '  b1001  '
+  Expected Result:  Normalize IDs to uppercase stripped form; operations succeed.
+  Observed Result:  Successfully booked against R101 and cancelled B1001 using lowercase spaced input.
+  Verification:     PASS
+  Test Method:      tests/test_main.py::TestSmartBusCore::test_ex05_case_and_whitespace_id_normalization
+
+[EX-06] ID sequence without reuse
+  Action/Input:     Three bookings with cancellation between
+  Expected Result:  IDs allocated B1001, B1002, B1003; cancelled ID is never reissued.
+  Observed Result:  Allocated B1001, B1002, B1003 monotonically without reusing B1001.
+  Verification:     PASS
+  Test Method:      tests/test_main.py::TestSmartBusCore::test_ex06_id_sequence_without_reuse
+
+[EX-07] ID collision avoidance
+  Action/Input:     Issued set has B1001; next allocation candidate=1001
+  Expected Result:  Allocator detects presence in issued set and skips to B1002.
+  Observed Result:  Allocated B1002, bypassing existing B1001 without duplicate ID.
+  Verification:     PASS
+  Test Method:      tests/test_main.py::TestSmartBusCore::test_ex07_collision_avoidance_in_id_allocator
+
+[EX-08] Cancel unknown ID
+  Action/Input:     Booking ID: 'B9999', '', '   '
+  Expected Result:  Helpful failure; full state unchanged.
+  Observed Result:  Rejected with ValueError; state snapshot identical before and after.
+  Verification:     PASS
+  Test Method:      tests/test_main.py::TestSmartBusCore::test_ex08_cancel_unknown_or_blank_id
+
+[EX-09] State isolation
+  Action/Input:     create_state() called twice; mutate one
+  Expected Result:  Mutations on first instance do not affect second instance.
+  Observed Result:  State 1 bookings=1; State 2 bookings=0; independent routes and sets confirmed.
+  Verification:     PASS
+  Test Method:      tests/test_main.py::TestSmartBusCore::test_ex09_state_isolation
+
+[EX-10] Empty bookings history
+  Action/Input:     Option 4 on fresh session
+  Expected Result:  Display 'No bookings found.'; no exception.
+  Observed Result:  Printed 'No bookings found.' without errors.
+  Verification:     PASS
+  Test Method:      tests/test_main.py::TestSmartBusCore::test_ex10_empty_bookings_view
+
+[EX-11] Route status transitions
+  Action/Input:     Check route status as seats are booked
+  Expected Result:  Available when all seats remain; Partially Booked when some remain; Fully Booked at 0.
+  Observed Result:  Transitioned from Available -> Partially Booked -> Fully Booked as expected.
+  Verification:     PASS
+  Test Method:      tests/test_main.py::TestSmartBusCore::test_ex11_route_status_transitions
+
+[EX-12] All routes exhausted
+  Action/Input:     Book all seats across all 5 routes
+  Expected Result:  Available-only view reports none available; all view still shows 5 routes.
+  Observed Result:  Available-only view printed helpful message; all view showed all 5 routes.
+  Verification:     PASS
+  Test Method:      tests/test_main.py::TestSmartBusCore::test_ex12_all_routes_exhausted
+
+[EX-13] Schedule structure
+  Action/Input:     Option 1 -> 3 (Schedule by city)
+  Expected Result:  Karachi (R101/R102/R104), Hyderabad (R103), Sukkur (R105); Mirpur Khas and Lahore report 'No scheduled departures.'
+  Observed Result:  All 5 cities rendered; departures matched; 2 cities showed 'No scheduled departures.'
+  Verification:     PASS
+  Test Method:      tests/test_main.py::TestSmartBusCore::test_ex13_schedule_structure
+
+[EX-14] Isolated report fixture
+  Action/Input:     Fresh state with R101 available_seats=0 and no bookings
+  Expected Result:  Report fully_booked=1, reserved_seats=0, confirmed_revenue=0.
+  Observed Result:  Observed fully_booked_routes=1, confirmed_revenue=0, total_bookings=0.
+  Verification:     PASS
+  Test Method:      tests/test_main.py::TestSmartBusCore::test_ex14_isolated_report_fixture
+
+[EX-15] Search route ID and unknown ID
+  Action/Input:     Search 'R104', then 'R999'
+  Expected Result:  R104 returns 1 exact match; R999 returns empty list.
+  Observed Result:  Exact ID match returned R104; unknown ID returned empty list.
+  Verification:     PASS
+  Test Method:      tests/test_main.py::TestSmartBusCore::test_ex15_search_route_id_and_unknown_id
+
+[EX-16] Empty routes fixture
+  Action/Input:     Empty routes list in state
+  Expected Result:  Helpful message; no crash; report totals zero.
+  Observed Result:  Views printed 'No routes registered.'; report totals returned zeros.
+  Verification:     PASS
+  Test Method:      tests/test_main.py::TestSmartBusCore::test_ex16_empty_routes_fixture
+
+[EX-17] EOF and KeyboardInterrupt handling
+  Action/Input:     Simulate EOFError / KeyboardInterrupt
+  Expected Result:  Graceful termination without traceback; no partial booking committed.
+  Observed Result:  Caught exceptions at session boundary; printed goodbye message without traceback.
+  Verification:     PASS
+  Test Method:      tests/test_cli.py::TestSmartBusCLI::test_ex17_eof_and_keyboard_interrupt_handling
+
+[EX-18] Submenu navigation & recovery
+  Action/Input:     Option 1 submenu -> '99', then '0'
+  Expected Result:  Error displayed, submenu repeated, '0' safely returns to main menu.
+  Observed Result:  Handled invalid submenu option safely and returned cleanly on 0.
+  Verification:     PASS
+  Test Method:      tests/test_cli.py::TestSmartBusCLI::test_ex18_invalid_submenu_then_back
+
+[EX-19] Bool and non-int rejection
+  Action/Input:     Pass True/False and floats to age/seats in book_ticket
+  Expected Result:  Reject bool and float types with ValueError; preserve state.
+  Observed Result:  bool and float rejected explicitly for age and seats; snapshot unchanged.
+  Verification:     PASS
+  Test Method:      tests/test_main.py::TestSmartBusCore::test_ex19_reject_bool_and_non_int_types
+
+[EX-20] Comprehensive invariant reconciliation
+  Action/Input:     Mixed booking/cancellation sequence with valid and invalid calls
+  Expected Result:  All state invariants in 04_ARCHITECTURE.md hold after every step.
+  Observed Result:  Verified capacity bounds, seat reconciliation, unique IDs, report sums after every step.
+  Verification:     PASS
+  Test Method:      tests/test_main.py::TestSmartBusCore::test_ex20_comprehensive_invariant_reconciliation
+
+[EX-21] Fresh process state independence
+  Action/Input:     Book ticket in session 1, start session 2
+  Expected Result:  Initial seats restored, bookings empty, B1001 available as first ID; no storage files created.
+  Observed Result:  Second session started with fresh 183 seats and 0 bookings; no disk files generated.
+  Verification:     PASS
+  Test Method:      tests/test_cli.py::TestSmartBusCLI::test_ex21_fresh_process_has_independent_state
+
+[EX-22] Copied path containing spaces
+  Action/Input:     Run unittest suite and main.py in copied path with spaces
+  Expected Result:  All tests and app execute successfully; no machine-specific absolute path dependency.
+  Observed Result:  Executed successfully in temporary directory containing spaces.
+  Verification:     PASS
+  Test Method:      project/evidence/commands.md::Portability Check
